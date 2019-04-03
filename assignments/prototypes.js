@@ -15,6 +15,15 @@
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
+function GameObject(args){
+  this.createdAt = args.createdAt;
+  this.name = args.name;
+  this.dimensions = args.dimensions;
+}
+
+GameObject.prototype.destroy = function(){
+  return `${this.name} was removed from the game.`;
+}
 
 /*
   === CharacterStats ===
@@ -22,6 +31,19 @@
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
+
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+CharacterStats.prototype.takeDamage = function(){
+  return `${this.name} took damage.`;
+}
+
+function CharacterStats(args){
+  GameObject.call(this, args);
+  this.healthPoints = args.healthPoints;
+}
+
+
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -32,6 +54,22 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
+function Humanoid(args){
+  CharacterStats.call(this, args);
+  this.team = args.team;
+  this.weapons = args.weapons;
+  this.language = args.language;
+  
+}
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+Humanoid.prototype.greet = function(){
+  return `${this.name} offers a greeting in ${this.language}`;
+}
+
+
+
+
  
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
@@ -41,7 +79,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -93,6 +131,7 @@
   });
 
   console.log(mage.createdAt); // Today's date
+  
   console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
   console.log(swordsman.healthPoints); // 15
   console.log(mage.name); // Bruce
@@ -102,9 +141,140 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  // my hero and villan will have a powerBuilder function that roles a random number
+  // this random number will determine the characters power level, if power level above threshhold
+  // use character attack on enemy;
+  // Start Villian
+//   function Villian(args){
+//     Humanoid.call(this, args);
+    
+//   }
+
+//   Villian.prototype = Object.create(Humanoid.prototype);
+
+//   Villian.prototype.eyeBeam = function(pwr, target){
+//     console.log(`${this.name} launched Eye Beam Attack against ${target}`);
+//     target.healthPoints - pwr;
+//     console.log(`${target} took ${pwr} damage!`)
+//     if(target.healthPoints <= 0){
+//       target.destroy();
+//     }
+//   }
+//   Villian.prototype.pwrBuilder = function(target){
+//     var power = Math.floor((Math.random() * 10) + 1);
+//     if(power > 4){
+//       this.eyeBeam(target);
+//     }else{
+//       console.log(`${this.name} built ${power} power`);
+//       console.log(`${this.name} misses with their attack`);
+//     }
+//   }
+
+//   // Villian.prototype.takeDamage = function(dmg, target){
+//   //   return `${this.name} took ${dmg} damage .`;
+//   //   if(target.healthPoints <= 0){
+//   //     target.destroy();
+//   //   }
+//   // }
+  
+// // Start Hero
+//   function Hero(args){
+//     Humanoid.call(this, args);
+//   }
+
+//   Hero.prototype = Object.create(Humanoid.prototype);
+
+//   Hero.prototype.nutPunch = function(pwr, target){
+//     console.log(target);
+//     console.log(`${this.name} launched Nut Punch against ${target}`);
+//     console.log(this.healthPoints);
+//     target.healthPoints - pwr;
+//     console.log(`${target} took ${pwr} damage!`)
+//     if(target.healthPoints <= 0){
+//       target.destroy();
+//     }
+//   }
+//   Hero.prototype.pwrBuilder = function(target){
+//     var power = Math.floor((Math.random() * 10) + 1);
+//     if(power > 4){
+//       this.nutPunch(target);
+//     }else{
+//       console.log(`${this.name} built ${power} power`);
+//       console.log(`${this.name} misses with their attack`);
+//     }
+//   }
+//   // Hero.prototype.takeDamage = function(dmg, target){
+//   //   return `${this.name} took ${dmg} damage .`;
+//   //   if(target.healthPoints <= 0){
+//   //     target.destroy();
+//   //   }
+//   // }
+
+//   const archEnemy = new Villian({
+//     createdAt: new Date(),
+//     dimensions: {
+//       length: 2,
+//       width: 1,
+//       height: 1,
+//     },
+//     healthPoints: 100,
+//     name: 'MrCheeks',
+//     team: 'Guild Of Aholes',
+//     weapons: [
+//       'Shades of Thrownin Shade',
+//     ],
+//     language: 'Javascript',
+//   });
+//   console.log(archEnemy);
+
+//   const heroGuy = new Hero({
+//     createdAt: new Date(),
+//     dimensions: {
+//       length: 2,
+//       width: 1,
+//       height: 1,
+//     },
+//     healthPoints: 100,
+//     name: 'Magnuson',
+//     team: 'Team Lambda',
+//     weapons: [
+//       'Brass knuckles of nut destruction',
+//     ],
+//     language: 'Bad',
+//   });
+//   console.log(heroGuy);
+
+
+//   var rounds = 0;
+//   // 10 rounds, each round is a chance to attack
+// function battle(){
+//   var attackTime = Math.floor((Math.random() * 10) + 1);
+  
+//   //console.log(attackTime);
+//   function fight(){
+//     if(attackTime > 5){
+//       archEnemy.pwrBuilder(heroGuy);
+//     }else if(attackTime < 5){
+//       heroGuy.pwrBuilder(archEnemy);
+//     }else if(attackTime == 5){
+//       console.log("Simultanious attacks!");
+//       heroGuy.pwrBuilder(archEnemy);
+//       archEnemy.pwrBuilder(heroGuy);
+//     }
+//     rounds++;
+//   }
+//   fight();
+// }
+
+// // Let them battle
+// if(rounds < 10){
+//   var battleTimer = setInterval(battle, 4000);
+// }
+
