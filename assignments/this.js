@@ -12,7 +12,8 @@ of functions this way.
 * write out a code example of each explanation above
 */
 function test(){
-    console.log('imma test');
+    console.log(this);
+    return true;
 }
 
 const dude = {
